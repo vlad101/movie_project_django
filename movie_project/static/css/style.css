@@ -1,0 +1,85 @@
+/* Styles for menu */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #f8f8f8;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #1E1E1E;
+}
+
+.menu ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li.active {
+    background-color: #444;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px;
+    padding-top: 20px;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Styles for content */
+.content {
+    margin-left: 200px;
+    padding: 20px;
+}
+
+
+/* Styles for screens with a width of 768 pixels or less */
+@media (max-width: 768px) {
+	header nav ul {
+		display: flex;
+		flex-direction: column;
+	}
+	header nav ul li {
+		margin-bottom: 10px;
+	}
+}
+
+/* Styles for screens with a width of 992 pixels or less */
+@media (max-width: 992px) {
+	header {
+		padding: 20px;
+	}
+	header nav ul {
+		flex-direction: row;
+		justify-content: space-between;
+	}
+}
+
+/* Styles for screens with a width of 1200 pixels or less */
+@media (max-width: 1200px) {
+	main {
+		margin: 0 20px;
+	}
+	section {
+		padding: 20px;
+	}
+	h1 {
+		font-size: 24px;
+	}
+	form {
+		margin-bottom: 20px;
+	}
+}

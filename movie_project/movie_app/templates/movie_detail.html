@@ -1,0 +1,136 @@
+<!-- Extending from index.html template -->
+{% extends 'index.html' %}   
+
+{% load static %}
+
+<!-- Creating a block for the title of the page -->
+{% block title %}           
+Movie Detail
+{% endblock %}
+
+<!-- Creating a block for the content of the page -->
+{% block content %}
+
+<!-- Link the stylesheet "style.css" located in the "static/css" directory -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <div class="row justify-content-left">
+        <div class="col-12">
+            <h2>Movie Detail</h2>
+        </div>
+    </div>
+    
+    <!-- Creating a form for the user to input a movie name and select information they want to see -->
+    <div class="row justify-content">
+        <div class="col-12">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="movie_name" class="col-sm-2 col-form-label">Enter Movie Title:</label>
+                    <div class="col-sm-3">
+                        <!-- Add value attribute to input to keep its value after submitting -->
+                        <input type="text" name="movie_name" id="movie_name" class="form-control" value="{{ request.POST.movie_name }}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="movie_year" class="col-sm-2 col-form-label">Enter movie year:</label>
+                    <div class="col-sm-1">
+                        <!-- Add value attribute to input to keep its value after submitting -->
+                        <div class="input-group date">
+                            <input type="text" name="movie_year" id="movie_year" class="form-control" value="{{ request.POST.movie_year }}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-10 col-form-label">Select the information you want to see:</label>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input type="checkbox" id="check-all" name="check-all" class="form-check-input">
+                            <label for="check-all" class="form-check-label">Check All</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="uncheck-all" name="uncheck-all" class="form-check-input">
+                            <label for="uncheck-all" class="form-check-label">Uncheck All</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        {% if movie_data_keys %}
+                        <div class="row">
+                            {% for key in movie_data_keys %}
+                            {% if key != 'Title' and key != 'Year' and key != 'Response' %}
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="{{ key.lower }}" class="info-checkbox" name="{{ key.lower }}" value="{{ key }}" {% if key.lower in request.POST %}checked{% endif %}>
+                                        <label for="{{ key.lower }}">{{ key }}</label>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary">Get Info</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content">
+        <div class="col-lg-8">
+            {% if movie %}
+                {% if movie.Response == 'False' %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">{{ movie.Error }}</h4>
+                </div>
+                {% else %}
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-md-3">
+                            <img src="{{ movie.Poster }}" alt="{{ movie.Title }} poster" class="img-fluid rounded" style="width: 50%; height: auto;">
+                        </div>
+                        <div class="col-md-9">
+                            <h3 class="mb-0">{{ movie.Title }}</h3>
+                            <p class="text-muted mb-2">{{ movie.Year }}</p>
+                        </div>
+                    </div>
+                    {% for key, value in movie.items %}
+                        {% if key and key.lower in request.POST and key != 'Response' and key != 'Poster' %}
+                        {% if key == 'Ratings' %}
+                            <div class="row mb-2">
+                                <div class="col-sm-3">
+                                    <h4>{{ key }}</h4>
+                                </div>
+                                <div class="col-sm-9">
+                                    {% for ratings_dict_item in value %}
+                                    {{ ratings_dict_item.Source }} ({{ ratings_dict_item.Value }}){% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    ,
+                                </div>
+                            </div>
+                            {% else %}
+                                <div class="row mb-2">
+                                    <div class="col-sm-3">
+                                        <h4>{{ key }}</h4>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>{{ value }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+</div>
+
+<!-- Load the scripts.js file -->
+<script src="{% static 'js/movie_detail_script.js' %}"></script>
+
+{% endblock %}

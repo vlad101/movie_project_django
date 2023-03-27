@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Set the title of the page to "Movie Fan App" by default, but allow it to be overridden by child templates -->
+        <title>{% block title %}Movie Fan App{% endblock %}</title>
+        
+        <!-- Set the viewport to the width of the device and enable scaling to ensure the page is responsive on mobile devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Load jQuery -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        <!-- Import Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+        <!-- Import Bootstrap CSS Datepicker plugin -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
+        <!-- Import Font Awesome CSS (optional) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+        <!-- Link the stylesheet "style.css" located in the "static/css" directory -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+
+        <!-- Load jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+        <!-- Import Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+        <!-- Import Bootstrap JS Datepicker plugin -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        
+    </head>
+    <body>
+
+        <!-- Menu -->
+        <div class="menu">
+            <ul>
+                <!-- Home link -->
+                <li{% if request.resolver_match.url_name == 'home' %} class="active"{% endif %}>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <!-- Movie Detail link -->
+                <li{% if request.resolver_match.url_name == 'movie_detail' %} class="active"{% endif %}>
+                    <a href="{% url 'movie_detail' %}">Movie Detail</a>
+                </li>
+                <!-- Movie Search link -->
+                <li{% if request.resolver_match.url_name == 'movie_search' %} class="active"{% endif %}>
+                    <a href="{% url 'movie_search' %}">Movie Search</a>
+                </li>
+            </ul>
+        </div>
+        
+    
+        <!-- Main content area -->
+        <main>
+            <div class="content">
+                <div>
+                    <h1>Movie Fan App</h1>
+                    <hr>
+                </div>
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+
+        <!-- Load the script.js file located in the "static/js" directory -->
+        <script src="{% static 'js/script.js' %}"></script>
+    </body>
+    
+</html>
